@@ -1,5 +1,5 @@
 import turtle
-from time import sleep, time
+from time import sleep, perf_counter
 
 from lab.busca import Alvo
 
@@ -19,7 +19,7 @@ class Grade:
         self.grid.hideturtle()
         self.grid.speed(0)
         self.grid.color("lightgray")
-        self.inicio = time()
+        self.inicio = perf_counter()
 
         self.xi = - (ncolunas * tamanho_do_no) // 2
         self.yi = - (nlinhas * tamanho_do_no) // 2
@@ -44,12 +44,22 @@ class Grade:
         self.screen.update()
 
     def desenha(self):
-        espera = 1 / self.fps - (time() - self.inicio)
-        if espera > 0:
-            sleep(espera)
-        self.inicio = time()
-        self.alvo.recolore()
+        if hasattr(self, 'alvo'):
+            self.alvo.recolore()
         self.screen.update()
+        
+        # Usar perf_counter para timing mais preciso em FPS alto
+        agora = perf_counter()
+        if not hasattr(self, 'ultimo_frame'):
+            self.ultimo_frame = agora
+        
+        tempo_decorrido = agora - self.ultimo_frame
+        tempo_target = 1.0 / self.fps
+        
+        if tempo_decorrido < tempo_target:
+            sleep(tempo_target - tempo_decorrido)
+        
+        self.ultimo_frame = perf_counter()
 
     def pinta(self, l, c, cor):
         self.pincel.penup()
