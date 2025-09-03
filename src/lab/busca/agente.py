@@ -10,6 +10,8 @@ class Agente:
         self.turtle = turtle.Turtle(shape=forma)
         self.turtle.color(cor)
         self.turtle.penup()
+        x, y = self.grade(self.linha, self.coluna)
+        self.turtle.goto(x, y)
 
     def move(self, linha, coluna):
         self.linha = linha

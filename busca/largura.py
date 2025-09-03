@@ -3,13 +3,13 @@ from collections import deque
 
 import numpy as np
 
-from src.lab.busca import sorteia_coords
-from src.lab.busca.agente import Agente
-from src.lab.busca.alvo import Alvo
-from src.lab.busca.grade import Grade
+from lab.busca import sorteia_coords
+from lab.busca.agente import Agente
+from lab.busca.alvo import Alvo
+from lab.busca.grade import Grade
 
 rnd = np.random.default_rng(23)
-grade = Grade(fps=5)
+grade = Grade(fps=20)
 agente = Agente(grade, 8, 8)
 alvo = Alvo(grade, *sorteia_coords(grade, rnd))
 visitados = set()
@@ -25,6 +25,7 @@ while agente != alvo and fronteira:
             fronteira.appendleft(sucessor)  # Insere elemento à esquerda da fila.
     grade.desenha()
 
-grade.pinta(*agente.posicao, cor="green" if agente == alvo else "black")
-grade.desenha()
+    grade.pinta(*agente.posicao, cor="green" if agente == alvo else "blue")
+    grade.desenha()
+
 turtle.done()
