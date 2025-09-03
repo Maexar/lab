@@ -9,7 +9,7 @@ from lab.busca.alvo import Alvo
 from lab.busca.grade import Grade
 
 try:
-    rnd = np.random.default_rng(5)
+    rnd = np.random.default_rng()  # Seed aleatória a cada execução
     grade = Grade(fps=10)
     agente = Agente(grade, linha=10, coluna=10)
     alvo = Alvo(grade, *sorteia_coords(grade, rnd))

@@ -9,7 +9,7 @@ from lab.busca.alvo import Alvo
 from lab.busca.grade import Grade
 
 try:
-    rnd = np.random.default_rng(5)
+    rnd = np.random.default_rng()  # Seed aleatória a cada execução
     grade = Grade(fps=10)
     agente = Agente(grade, linha=10, coluna=10)
     alvo = Alvo(grade, *sorteia_coords(grade, rnd))
@@ -19,17 +19,17 @@ try:
     while agente != alvo and pilha:
         proximo = pilha.pop()  # Remove do topo da pilha (LIFO)
         
-        # Só processa se ainda não foi visitado
+        # so processa se ainda n foi visitado
         if proximo not in visitados:
             agente.move(*proximo)
             visitados.add(proximo)
             grade.pinta(*proximo, cor="blue")
             
-            # Adiciona sucessores não visitados à pilha
+            # adiciona sucessores n visitados à pilha
             for sucessor in agente.sucessores:
                 if sucessor not in visitados:
                     grade.pinta(*sucessor, cor="lightgreen")
-                    pilha.append(sucessor)  # Adiciona no topo da pilha
+                    pilha.append(sucessor)  # adiciona no topo da pilha
             
             grade.desenha()
 
