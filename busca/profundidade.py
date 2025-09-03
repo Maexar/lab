@@ -9,15 +9,15 @@ from lab.busca.alvo import Alvo
 from lab.busca.grade import Grade
 
 try:
-    rnd = np.random.default_rng(23)
+    rnd = np.random.default_rng(5)
     grade = Grade(fps=10)
-    agente = Agente(grade, 8, 8)
+    agente = Agente(grade, linha=10, coluna=10)
     alvo = Alvo(grade, *sorteia_coords(grade, rnd))
     visitados = set()
-    fronteira = deque([agente.posicao])
+    pilha = deque([agente.posicao])
 
-    while agente != alvo and fronteira:
-        proximo = fronteira.pop()  # Retira da lista o elemento mais à direita (FIFO)
+    while agente != alvo and pilha:
+        proximo = pilha.pop()  # Remove do topo da pilha (LIFO)
         
         # Só processa se ainda não foi visitado
         if proximo not in visitados:
@@ -25,17 +25,17 @@ try:
             visitados.add(proximo)
             grade.pinta(*proximo, cor="blue")
             
-            # Adiciona sucessores não visitados à fronteira
+            # Adiciona sucessores não visitados à pilha
             for sucessor in agente.sucessores:
-                if sucessor not in visitados and sucessor not in fronteira:
+                if sucessor not in visitados:
                     grade.pinta(*sucessor, cor="lightgreen")
-                    fronteira.appendleft(sucessor)  # Insere elemento à esquerda da fila
+                    pilha.append(sucessor)  # Adiciona no topo da pilha
             
             grade.desenha()
 
     grade.pinta(*agente.posicao, cor="green" if agente == alvo else "red")
     grade.desenha()
-
+    
     turtle.exitonclick()
     
 except Exception as e:

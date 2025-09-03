@@ -11,8 +11,29 @@ class Grade:
         self.tamanho_do_no, self.nlinhas, self.ncolunas = tamanho_do_no, nlinhas, ncolunas
         width = ncolunas * tamanho_do_no + 100
         height = nlinhas * tamanho_do_no + 100
+        
+        # Limpar qualquer estado anterior do turtle
+        try:
+            turtle.bye()
+        except:
+            pass
+        
+        # Reset completo do módulo turtle
+        turtle.TurtleScreen._RUNNING = True
+        
+        # Configurar turtle para mostrar a janela
+        turtle.setup(width=width, height=height, startx=100, starty=100)
+        
         self.screen = turtle.Screen()
         self.screen.setup(width, height)
+        self.screen.title("Algoritmo de Busca")
+        self.screen.bgcolor("white")
+        
+        # Garantir que a janela seja visível
+        self.screen.getcanvas().winfo_toplevel().lift()
+        self.screen.getcanvas().winfo_toplevel().attributes('-topmost', True)
+        self.screen.getcanvas().winfo_toplevel().attributes('-topmost', False)
+        
         self.screen.tracer(0, 0)
         self.fps = fps
         self.grid = turtle.Turtle()
@@ -48,18 +69,12 @@ class Grade:
             self.alvo.recolore()
         self.screen.update()
         
-        # Usar perf_counter para timing mais preciso em FPS alto
-        agora = perf_counter()
-        if not hasattr(self, 'ultimo_frame'):
-            self.ultimo_frame = agora
-        
-        tempo_decorrido = agora - self.ultimo_frame
-        tempo_target = 1.0 / self.fps
-        
-        if tempo_decorrido < tempo_target:
-            sleep(tempo_target - tempo_decorrido)
-        
-        self.ultimo_frame = perf_counter()
+        # Controle de FPS simplificado - sem sleep se FPS for muito alto
+        if self.fps <= 30:
+            sleep(1.0 / self.fps)
+        else:
+            # Para FPS alto, usar apenas uma pequena pausa
+            sleep(0.01)
 
     def pinta(self, l, c, cor):
         self.pincel.penup()
