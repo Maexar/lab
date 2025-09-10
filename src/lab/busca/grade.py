@@ -132,10 +132,10 @@ class Grade:
     def redesenhar_no(self, nome_no, cor):
         if self.usar_grafo and nome_no in self.nos:
             if hasattr(self, 'alvo') and self.alvo and nome_no == self.alvo.nome_no:
-                if cor == "blue":
+                if cor in ["blue", "lightgreen"]:
                     pass
                 else:
-                    return
+                    return  
                 
             linha, coluna = self.nos[nome_no]
             x, y = self(linha, coluna)
